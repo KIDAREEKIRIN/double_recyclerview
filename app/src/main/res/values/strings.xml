@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">double_recyclerview</string>
+    <string name="title1">시기 확인</string>
 </resources>

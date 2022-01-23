@@ -1,5 +1,6 @@
 package com.example.double_recyclerview;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,24 @@ import java.util.List;
 // 자식 어답터
 public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemViewHolder> {
 
-    private List<SubItem> subItemList;
+    // 변수 선언.
+    public List<RetroData2> retroData2List;
+    public List<RetroData> retroDataList;
+    private String TAG = "여기까지";
 
-    SubItemAdapter(List<SubItem> subItemList) {
-        this.subItemList = subItemList;
+    // 생성자.
+
+    public SubItemAdapter(List<RetroData2> retroData2List) {
+        this.retroData2List = retroData2List;
+    }
+
+    class SubItemViewHolder extends RecyclerView.ViewHolder {
+        TextView tvSubItemTitle;
+
+        SubItemViewHolder(View itemView) {
+            super(itemView);
+            tvSubItemTitle = itemView.findViewById(R.id.tv_sub_item_title);
+        }
     }
 
     @NonNull
@@ -28,21 +43,19 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
 
     @Override
     public void onBindViewHolder(@NonNull SubItemViewHolder subItemViewHolder, int i) {
-        SubItem subItem = subItemList.get(i);
-        subItemViewHolder.tvSubItemTitle.setText(subItem.getSubItemTitle());
+        RetroData2 retroData2 = retroData2List.get(i);
+
+
+        if(retroData2.getTitle().equals("시기 확인")) {
+            subItemViewHolder.tvSubItemTitle.setText(retroData2.getStep());
+        } else if(retroData2.getTitle().equals("2.야영수련활동 운영계획 수립")){
+            subItemViewHolder.tvSubItemTitle.setText("");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return subItemList.size();
-    }
-
-    class SubItemViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSubItemTitle;
-
-        SubItemViewHolder(View itemView) {
-            super(itemView);
-            tvSubItemTitle = itemView.findViewById(R.id.tv_sub_item_title);
-        }
+        Log.d(TAG, String.valueOf(retroData2List));
+        return retroData2List.size();
     }
 }
