@@ -6,19 +6,33 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class RetroData {
-    @Expose
+
+    @SerializedName("number") private int number;
+
+
     @SerializedName("title") private String title;
 
-    @Expose
+
     @SerializedName("step1") private String step1;
 
-    @Expose
+
     @SerializedName("step2") private String step2;
 
-    public RetroData(String title, String step1, String step2) {
+    private List<RetroDataStep> retroDataStepList;
+
+
+    public RetroData(int number, String title,List<RetroDataStep> retroDataStepList) {
+        this.number = number;
         this.title = title;
-        this.step1 = step1;
-        this.step2 = step2;
+        this.retroDataStepList = retroDataStepList;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getTitle() {
@@ -29,19 +43,11 @@ public class RetroData {
         this.title = title;
     }
 
-    public String getStep1() {
-        return step1;
+    public List<RetroDataStep> getStepList() {
+        return retroDataStepList;
     }
 
-    public void setStep1(String step1) {
-        this.step1 = step1;
-    }
-
-    public String getStep2() {
-        return step2;
-    }
-
-    public void setStep2(String step2) {
-        this.step2 = step2;
+    public void setStepList(List<RetroDataStep> retroDataStepList) {
+        this.retroDataStepList = retroDataStepList;
     }
 }

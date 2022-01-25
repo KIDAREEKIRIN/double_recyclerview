@@ -48,48 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        getData();
-    }
-
-    //    // 상위아이템 큰박스 아이템을 10개 만듭니다.
-//    private List<Item> buildItemList() {
-//        List<Item> itemList = new ArrayList<>();
-//        for (int i=0; i<10; i++) {
-//            Item item = new Item("Item "+i, buildSubItemList());
-//            itemList.add(item);
-//        }
-//        return itemList;
-//    }
-//    // 그안에 존재하는 하위 아이템 박스(3개씩 보이는 아이템들)
-//    private List<SubItem> buildSubItemList() {
-//        List<SubItem> subItemList = new ArrayList<>();
-//        for (int i=0; i<3; i++) {
-//            SubItem subItem = new SubItem("Sub Item "+i);
-//            subItemList.add(subItem);
-//        }
-//        return subItemList;
-//    }
-
-//    private List<RetroData> buildItemList() {
-//        List<RetroData> retroDataList = new ArrayList<>();
-//        RetroData retroData = new RetroData(retroData2.getTitle(), retroData2.getStep1());
-//        retroDataList.add(retroData);
-//        return retroDataList;
-//    }
-
-//    private List<RetroData2> buildSubItemList() {
-//        List<RetroData2> retroData2List = new ArrayList<>();
-//        for (int i = 0; i < , i++)
-//        RetroData2 retroData2 = new RetroData2(getTitle(),getStep1(),getStep2());
-//    }
-
 
     public void generateDataList(List<RetroData> retroDataList) {
         // 상위 리사이클러뷰 설정

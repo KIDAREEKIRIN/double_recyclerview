@@ -12,6 +12,7 @@ import androidx.annotation.RestrictTo;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,13 @@ import retrofit2.Response;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     //변수 선언.
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-     List<RetroData> retroDataList;
-     List<RetroData2> retroData2List;
-     List<RetroDataStep> retroDataStepList;
-
+    List<RetroData> retroDataList;
+    RetroDataStep retroDataStep;
+    RetroData retroData;
+    List<RetroDataStep> retroDataStepList;
 
     public String TAG = "여기까지 돌아감.";
+    private int a =6;
 
 
     // 생성자.
@@ -52,15 +53,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             // 자식아이템 영역 -> 뷰홀더에 자식 영역을 추가함.
             rvSubItem = itemView.findViewById(R.id.rv_sub_item);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos = getAdapterPosition();
-                    if(pos != RecyclerView.NO_POSITION) {
-
-                    }
-                }
-            });
         }
     }
 
@@ -77,7 +69,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         RetroData retroData = retroDataList.get(i);
         itemViewHolder.tvItemTitle.setText(retroData.getTitle());
 
-
         // RetroDataStep에 대한 내용.
         GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<List<RetroDataStep>> call3 = getDataService3.getAllDatas3();
@@ -86,6 +77,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             @Override
             public void onResponse(Call<List<RetroDataStep>> call, Response<List<RetroDataStep>> response) {
                 if(response.isSuccessful() && response.body() != null) {
+                    retroDataStepList = response.body();
 
                     // 자식 레이아웃 매니저 설정
                     LinearLayoutManager layoutManager = new LinearLayoutManager(
@@ -94,35 +86,45 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                             false
                     );
 
+                    // 시기별 업무 올리기.
 
-                    if(retroData.getTitle().equals("1. 시기 확인") ) {
-                        // 자식 어답터 설정
-                        SubItemAdapter subItemAdapter = new SubItemAdapter(buildItemList());
+//                     1. 시기 확인.
+                    if(retroData.getNumber() == 1) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList1());
                         itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
                         itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-                        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+
+                        // 2. 야영수련활동 운영계획 수립.
+                    } else if(retroData.getNumber() == 2) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList2());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        // 3. 학운위 안건 심의
+                    } else if(retroData.getNumber() == 3){
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList3());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        // 4. 야영수련활동 운영계획 내부결재.
+                    } else if (retroData.getNumber() == 4) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList4());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        // 5. 교통편 예약/.
+                    } else if(retroData.getNumber() == 5) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList5());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        // 6. 사전답사.
+                    } else if(retroData.getNumber() == 6) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList6());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        // 나머지.
                     } else {
-                        // 자식 어답터 설정
-                        SubItemAdapter subItemAdapter = new SubItemAdapter(buildSubItemList());
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(retroDataStepList);
                         itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
                         itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-                        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
                     }
-
-
-
-//                    // 자식 어답터 설정
-//                    SubItemAdapter subItemAdapter = new SubItemAdapter(retroDataStepList);
-//                    itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
-//                    itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-//                    itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
-
-
-//                    generateData3List(itemViewHolder,response.body());
-
-                    response.body();
-
-
 
                 }
             }
@@ -137,51 +139,74 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, String.valueOf(retroDataList));
         return retroDataList.size();
     }
 
-    public List<RetroDataStep> buildItemList() {
+    public void generateData3List(@NonNull ItemViewHolder itemViewHolder, List<RetroDataStep> retroDataStepList) {
+
+    }
+
+    private List<RetroDataStep> getList1() {
         List<RetroDataStep> list1 = new ArrayList<>();
-        list1.add(new RetroDataStep("하이"));
-        list1.add(new RetroDataStep("하이"));
+        list1.add(0,retroDataStepList.get(0));
+        list1.add(1,retroDataStepList.get(1));
+        list1.add(2,retroDataStepList.get(2));
+        list1.add(3,retroDataStepList.get(3));
+        list1.add(4,retroDataStepList.get(4));
+        list1.add(5,retroDataStepList.get(5));
         return list1;
     }
-    // 그안에 존재하는 하위 아이템 박스(3개씩 보이는 아이템들)
-    public List<RetroDataStep> buildSubItemList() {
+
+    private List<RetroDataStep> getList2() {
         List<RetroDataStep> list2 = new ArrayList<>();
-        list2.add(new RetroDataStep("바이"));
-        list2.add(new RetroDataStep("바이"));
+        list2.add(0,retroDataStepList.get(6));
+        list2.add(1,retroDataStepList.get(7));
+        list2.add(2,retroDataStepList.get(8));
+        list2.add(3,retroDataStepList.get(9));
+        list2.add(4,retroDataStepList.get(10));
+        list2.add(5,retroDataStepList.get(11));
+        list2.add(6,retroDataStepList.get(12));
+        list2.add(7,retroDataStepList.get(13));
+        list2.add(8,retroDataStepList.get(14));
+        list2.add(9,retroDataStepList.get(15));
         return list2;
     }
 
-
-//    public void generateData2List(@NonNull ItemViewHolder itemViewHolder, List<RetroData2> retroData2List) {
-//        // 자식 레이아웃 매니저 설정
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(
-//                itemViewHolder.rvSubItem.getContext(),
-//                LinearLayoutManager.VERTICAL,
-//                false
-//        );
-//
-//
-//
-//        // 자식 어답터 설정
-//        SubItemAdapter subItemAdapter = new SubItemAdapter(retroData2List);
-//        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
-//        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-//
-//        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
-//
-//    }
-
-    public void generateData3List(@NonNull ItemViewHolder itemViewHolder, List<RetroDataStep> retroDataStepList) {
-
-
-
-
-
-
+    private List<RetroDataStep> getList3() {
+        List<RetroDataStep> list3 = new ArrayList<>();
+        list3.add(0,retroDataStepList.get(16));
+        list3.add(1,retroDataStepList.get(17));
+        list3.add(2,retroDataStepList.get(18));
+        list3.add(3,retroDataStepList.get(19));
+        list3.add(4,retroDataStepList.get(20));
+        return list3;
     }
+
+    private List<RetroDataStep> getList4() {
+        List<RetroDataStep> list4 = new ArrayList<>();
+        list4.add(0,retroDataStepList.get(21));
+        list4.add(1,retroDataStepList.get(22));
+        return list4;
+    }
+
+    private List<RetroDataStep> getList5() {
+        List<RetroDataStep> list5 = new ArrayList<>();
+        list5.add(0,retroDataStepList.get(23));
+        list5.add(1,retroDataStepList.get(24));
+        return list5;
+    }
+
+    private List<RetroDataStep> getList6() {
+        List<RetroDataStep> list6 = new ArrayList<>();
+        list6.add(0,retroDataStepList.get(25));
+        list6.add(1,retroDataStepList.get(26));
+        list6.add(2,retroDataStepList.get(27));
+        list6.add(3,retroDataStepList.get(28));
+        list6.add(4,retroDataStepList.get(29));
+        list6.add(5,retroDataStepList.get(30));
+        return list6;
+    }
+
+
 
 }

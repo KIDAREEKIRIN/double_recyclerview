@@ -1,5 +1,7 @@
 package com.example.double_recyclerview;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,63 +19,66 @@ import java.util.List;
 // 자식 어답터
 public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemViewHolder> {
 
+    List<RetroDataStep> retroDataStepList;
+    List<RetroData> retroDataList;
+    RetroData retroData;
     // 변수 선언.
-    public List<RetroData2> retroData2List;
-    public List<RetroData> retroDataList;
-    public RetroDataStep retroDataStep;
-    public List<RetroDataStep> retroDataStepList;
-    public List<RetroDataStep> list1;
-    public List<RetroDataStep> list2;
     private String TAG = "여기까지";
     private int a = 6;
+    private Context mContext;
 
     // 생성자.
-
-    public SubItemAdapter(List<RetroDataStep> retroDataStepList, List<RetroDataStep> list1, List<RetroDataStep> list2) {
-        this.retroDataStepList = retroDataStepList;
-        this.list1 = retroDataStepList;
-        this.list2 = retroDataStepList;
-
-    }
-
     public SubItemAdapter(List<RetroDataStep> retroDataStepList) {
-        this.retroDataStepList = list1;
+        this.retroDataStepList = retroDataStepList;
+
     }
 
-
-    class SubItemViewHolder extends RecyclerView.ViewHolder {
+    public class SubItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvSubItemTitle;
 
         SubItemViewHolder(View itemView) {
             super(itemView);
+
             tvSubItemTitle = itemView.findViewById(R.id.tv_sub_item_title);
+
+            // 클릭리스너.
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int currentPos = getAdapterPosition(); // click position.
+                    RetroDataStep retroDataStep = retroDataStepList.get(currentPos); // 현재 클릭된 포지션의 아이템을 가져옴.
+
+                    Toast.makeText(mContext, retroDataStep.getStep() + retroDataStep.getStep1() + retroDataStep.getNumber(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
     }
 
     @NonNull
     @Override
     public SubItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+        mContext = viewGroup.getContext();
+
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_sub_item, viewGroup, false);
         return new SubItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SubItemViewHolder subItemViewHolder, int i) {
-        // RetroData2의 데이터를 반영
+        // RetroDataStep의 데이터를 반영
+
         RetroDataStep retroDataStep = retroDataStepList.get(i);
         subItemViewHolder.tvSubItemTitle.setText(retroDataStep.getStep());
-
-
-        Log.d(TAG, "onBindViewHolder: " + retroDataStepList);
-
-
 
     }
 
     @Override
     public int getItemCount() {
 //        Log.d(TAG, String.valueOf(retroData2List));
-        return list1.size();
+        return retroDataStepList.size();
     }
+
 
 }
