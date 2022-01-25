@@ -8,11 +8,15 @@ public class RetroData2 {
     @SerializedName("title") private String title;
 
     @Expose
-    @SerializedName("step") private String step;
+    @SerializedName("step1") private String step1;
 
-    public RetroData2(String title, String step) {
+    @Expose
+    @SerializedName("step2") private String step2;
+
+    public RetroData2(String title, String step1, String step2) {
         this.title = title;
-        this.step = step;
+        this.step1 = step1;
+        this.step2 = step2;
     }
 
     public String getTitle() {
@@ -23,11 +27,19 @@ public class RetroData2 {
         this.title = title;
     }
 
-    public String getStep() {
-        return step;
+    public String getStep1() {
+        return step1;
     }
 
-    public void setStep(String step) {
-        this.step = step;
+    public void setStep1(String step1) {
+        this.step1 = step1;
+    }
+
+    public String getStep2() {
+        return step2;
+    }
+
+    public void setStep2(String step2) {
+        this.step2 = step2;
     }
 }

@@ -26,6 +26,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
      List<RetroData> retroDataList;
      List<RetroData2> retroData2List;
+     List<RetroDataStep> retroDataStepList;
 
 
     public String TAG = "여기까지 돌아감.";
@@ -38,7 +39,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvItemTitle;
+         TextView tvItemTitle;
          RecyclerView rvSubItem;
 
         ItemViewHolder(View itemView) {
@@ -72,30 +73,66 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
+        // title 에 대한 retroData의 리스트를 get(i) 값으로 반영.
         RetroData retroData = retroDataList.get(i);
         itemViewHolder.tvItemTitle.setText(retroData.getTitle());
 
-//        // 속도 향상 -> 하면 좋고, 아님 말고.
-//        layoutManager.setInitialPrefetchItemCount(retroData.getSubItemList().size());
 
-        GetDataService getDataService2 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<RetroData2>> call2 = getDataService2.getAllDatas2();
+        // RetroDataStep에 대한 내용.
+        GetDataService getDataService3 = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<RetroDataStep>> call3 = getDataService3.getAllDatas3();
 
-        call2.enqueue(new Callback<List<RetroData2>>() {
+        call3.enqueue(new Callback<List<RetroDataStep>>() {
             @Override
-            public void onResponse(Call<List<RetroData2>> call, Response<List<RetroData2>> response) {
+            public void onResponse(Call<List<RetroDataStep>> call, Response<List<RetroDataStep>> response) {
                 if(response.isSuccessful() && response.body() != null) {
 
-                    generateData2List(itemViewHolder,response.body());
+                    // 자식 레이아웃 매니저 설정
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(
+                            itemViewHolder.rvSubItem.getContext(),
+                            LinearLayoutManager.VERTICAL,
+                            false
+                    );
+
+
+                    if(retroData.getTitle().equals("1. 시기 확인") ) {
+                        // 자식 어답터 설정
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(buildItemList());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+                    } else {
+                        // 자식 어답터 설정
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(buildSubItemList());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+                    }
+
+
+
+//                    // 자식 어답터 설정
+//                    SubItemAdapter subItemAdapter = new SubItemAdapter(retroDataStepList);
+//                    itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+//                    itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+//                    itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+
+
+//                    generateData3List(itemViewHolder,response.body());
+
+                    response.body();
+
+
 
                 }
             }
 
             @Override
-            public void onFailure(Call<List<RetroData2>> call, Throwable t) {
+            public void onFailure(Call<List<RetroDataStep>> call, Throwable t) {
 
             }
         });
+
     }
 
     @Override
@@ -104,21 +141,46 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return retroDataList.size();
     }
 
+    public List<RetroDataStep> buildItemList() {
+        List<RetroDataStep> list1 = new ArrayList<>();
+        list1.add(new RetroDataStep("하이"));
+        list1.add(new RetroDataStep("하이"));
+        return list1;
+    }
+    // 그안에 존재하는 하위 아이템 박스(3개씩 보이는 아이템들)
+    public List<RetroDataStep> buildSubItemList() {
+        List<RetroDataStep> list2 = new ArrayList<>();
+        list2.add(new RetroDataStep("바이"));
+        list2.add(new RetroDataStep("바이"));
+        return list2;
+    }
 
-    public void generateData2List(@NonNull ItemViewHolder itemViewHolder, List<RetroData2> retroData2List) {
-        // 자식 레이아웃 매니저 설정
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                itemViewHolder.rvSubItem.getContext(),
-                LinearLayoutManager.VERTICAL,
-                false
-        );
 
-        // 자식 어답터 설정
-        SubItemAdapter subItemAdapter = new SubItemAdapter(retroData2List);
-        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
-        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+//    public void generateData2List(@NonNull ItemViewHolder itemViewHolder, List<RetroData2> retroData2List) {
+//        // 자식 레이아웃 매니저 설정
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(
+//                itemViewHolder.rvSubItem.getContext(),
+//                LinearLayoutManager.VERTICAL,
+//                false
+//        );
+//
+//
+//
+//        // 자식 어답터 설정
+//        SubItemAdapter subItemAdapter = new SubItemAdapter(retroData2List);
+//        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+//        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+//
+//        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+//
+//    }
 
-        itemViewHolder.rvSubItem.setRecycledViewPool(viewPool);
+    public void generateData3List(@NonNull ItemViewHolder itemViewHolder, List<RetroDataStep> retroDataStepList) {
+
+
+
+
+
 
     }
 

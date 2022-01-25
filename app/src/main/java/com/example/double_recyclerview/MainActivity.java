@@ -18,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
 
     List<RetroData> retroDataList;
     SubItemAdapter subItemAdapter;
+    public RetroData retroData;
+    public RetroData2 retroData2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -74,9 +77,19 @@ public class MainActivity extends AppCompatActivity {
 //        return subItemList;
 //    }
 
-    public void getData() {
+//    private List<RetroData> buildItemList() {
+//        List<RetroData> retroDataList = new ArrayList<>();
+//        RetroData retroData = new RetroData(retroData2.getTitle(), retroData2.getStep1());
+//        retroDataList.add(retroData);
+//        return retroDataList;
+//    }
 
-    }
+//    private List<RetroData2> buildSubItemList() {
+//        List<RetroData2> retroData2List = new ArrayList<>();
+//        for (int i = 0; i < , i++)
+//        RetroData2 retroData2 = new RetroData2(getTitle(),getStep1(),getStep2());
+//    }
+
 
     public void generateDataList(List<RetroData> retroDataList) {
         // 상위 리사이클러뷰 설정
