@@ -16,15 +16,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="6dp">
 
                 <TextView
                     android:id="@+id/tv_sub_item_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="8"
                     android:text="Sub item title"
                     android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/iv_tips"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_tips"
+                    />
 
             </LinearLayout>
         </RelativeLayout>

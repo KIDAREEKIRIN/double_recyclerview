@@ -120,6 +120,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
                         itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
                         // 나머지.
+                    } else if(retroData.getNumber() == 7){
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList7());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
+                    } else if (retroData.getNumber() == 8) {
+                        SubItemAdapter subItemAdapter = new SubItemAdapter(getList8());
+                        itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
+                        itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
                     } else {
                         SubItemAdapter subItemAdapter = new SubItemAdapter(retroDataStepList);
                         itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
@@ -140,10 +148,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public int getItemCount() {
         return retroDataList.size();
-    }
-
-    public void generateData3List(@NonNull ItemViewHolder itemViewHolder, List<RetroDataStep> retroDataStepList) {
-
     }
 
     private List<RetroDataStep> getList1() {
@@ -205,6 +209,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         list6.add(4,retroDataStepList.get(29));
         list6.add(5,retroDataStepList.get(30));
         return list6;
+    }
+
+    private List<RetroDataStep> getList7() {
+        List<RetroDataStep> list7 = new ArrayList<>();
+        list7.add(0,retroDataStepList.get(0));
+        return list7;
+    }
+
+    private List<RetroDataStep> getList8() {
+        List<RetroDataStep> list8 = new ArrayList<>();
+        list8.add(0,retroDataStepList.get(0));
+        return list8;
     }
 
 
