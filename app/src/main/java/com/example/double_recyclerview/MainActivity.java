@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     List<RetroData> retroDataList;
     SubItemAdapter subItemAdapter;
     public RetroData retroData;
-    public RetroData2 retroData2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+        //RetroDataStep & retrofit2 결합.
         GetDataService getDataService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<List<RetroData>> call = getDataService.getAllDatas();
 

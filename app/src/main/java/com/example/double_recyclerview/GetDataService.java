@@ -10,8 +10,8 @@ public interface GetDataService {
     @GET("sooryun_step.php")
     Call<List<RetroData>> getAllDatas();
 
-    @GET("sooryun_step_second.php")
-    Call<List<RetroData2>> getAllDatas2();
+//    @GET("sooryun_step_second.php")
+//    Call<List<RetroData2>> getAllDatas2();
 
     @GET("sooryun_step_third.php")
     Call<List<RetroDataStep>> getAllDatas3();

@@ -146,17 +146,9 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
 
     // Pdf 파일 열기.
     public void openPdf(String fileName) {
-//        copyFileFromAssets(fileName);
 
         /** PDF reader code **/
-//        File file = new File(getFilesDir() + "/" + fileName);
 
-//        Uri uri = null;
-//        if(!fileName.startsWith("http")) {
-//            uri = FileProvider.getUriForFile(this, getString(R.string.file_provider_authority), file);
-//        } else {
-//            uri = Uri.parse(fileName);
-//        }
         Uri uri = Uri.parse(fileName);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "application/pdf");
