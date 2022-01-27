@@ -39,15 +39,12 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
 
     public class SubItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvSubItemTitle;
-        // 추가.
         ImageButton iv_tips;
 
         SubItemViewHolder(View itemView) {
             super(itemView);
-
             tvSubItemTitle = itemView.findViewById(R.id.tv_sub_item_title);
             iv_tips = itemView.findViewById(R.id.iv_tips);
-
 
             // 클릭리스너. -> 본문 클릭시,
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +74,7 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
     @NonNull
     @Override
     public SubItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
+        //클릭리스너를 위한 mContext.
         mContext = viewGroup.getContext();
 
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_sub_item, viewGroup, false);
@@ -94,7 +91,6 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
         Log.d(TAG, "onBindViewHolder: "+ retroDataStep.getTips());
         Log.d(TAG, "tips_contentAlertDialog: " + retroDataStep.getStep());
         Log.d(TAG, "onBindViewHolder: " + retroDataStep.getTips_content());
-
 
         // Tips가 있으면 보이고, 없으면 안보이기. (DB 연동)
         if(retroDataStep.getTips() == 1) {
@@ -146,9 +142,7 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
 
     // Pdf 파일 열기.
     public void openPdf(String fileName) {
-
         /** PDF reader code **/
-
         Uri uri = Uri.parse(fileName);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "application/pdf");

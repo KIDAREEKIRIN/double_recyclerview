@@ -16,10 +16,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<RetroData> retroDataList;
-    SubItemAdapter subItemAdapter;
-    public RetroData retroData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
