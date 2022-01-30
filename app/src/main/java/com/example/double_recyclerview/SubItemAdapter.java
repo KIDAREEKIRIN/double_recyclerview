@@ -14,18 +14,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 // 자식 어답터
 public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemViewHolder> {
 
     List<RetroDataStep> retroDataStepList;
+
+    List<RetroFilePath> retroFilePathList;
+
+    RetroDataStep retroDataStep;
+
 
     // 변수 선언.
     private String TAG = "여기까지";
@@ -41,6 +47,7 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
         TextView tvSubItemTitle;
         ImageButton iv_tips;
 
+
         SubItemViewHolder(View itemView) {
             super(itemView);
             tvSubItemTitle = itemView.findViewById(R.id.tv_sub_item_title);
@@ -51,20 +58,27 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
                 @Override
                 public void onClick(View v) {
                     int currentPos = getAdapterPosition(); // click position.
+
                     RetroDataStep retroDataStep = retroDataStepList.get(currentPos); // 현재 클릭된 포지션의 아이템을 가져옴.
+
+//                    RetroFilePath retroFilePath = retroFilePathList.get(currentPos);
                     // 토스트 메세지 띄우기.
                     Toast.makeText(mContext, retroDataStep.getStep()
-                            + retroDataStep.getNumber(), Toast.LENGTH_SHORT).show();
+                            + retroDataStep.getNumber() + retroDataStep.getFilepath(), Toast.LENGTH_SHORT).show();
 
-                    // 버튼 클릭하면.
+                    //                     버튼 클릭하면.
                     switch(retroDataStep.getNumber()){
                         // 수련활동 기안계획서.
                         case  16:
-                            openPdf("http://3.37.249.79/dutylist/sooryun/sooryun1.pdf");
-                        break;
-
-                      default:
-                        break;
+                            openPdf(retroDataStep.getFilepath());
+                            //openPdf("http://3.37.249.79/dutylist/sooryun/sooryun1.pdf");
+                            break;
+                        case 31:
+                            openPdf(retroDataStep.getFilepath());
+                            //openPdf("http://3.37.249.79/dutylist/sooryun/sooryun2.pdf");
+                            break;
+                        default:
+                            break;
                     }
                 }
             });
@@ -141,9 +155,10 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
     }
 
     // Pdf 파일 열기.
-    public void openPdf(String fileName) {
+    public void openPdf(String filename) {
+
         /** PDF reader code **/
-        Uri uri = Uri.parse(fileName);
+        Uri uri = Uri.parse(filename);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -155,7 +170,5 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
             e.printStackTrace();
         }
     }
-
-
 
 }
