@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -52,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         ItemAdapter itemAdapter = new ItemAdapter(retroDataList);
         rvItem.setAdapter(itemAdapter);
         rvItem.setLayoutManager(layoutManager);
+
+        // 리사이클러뷰 클릭시 이동하기.
+//        rvItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent goDetail = new Intent(MainActivity.this, DetailActivity.class);
+//                startActivity(goDetail);
+//            }
+//        });
     }
 
 

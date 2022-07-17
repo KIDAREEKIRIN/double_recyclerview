@@ -1,11 +1,14 @@
 package com.example.double_recyclerview;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class RetroDataStep {
+public class RetroDataStep implements Parcelable {
 
     @Expose
     @SerializedName("number") private int number;
@@ -36,6 +39,27 @@ public class RetroDataStep {
         this.file = file;
         this.filepath = filepath;
     }
+
+    protected RetroDataStep(Parcel in) {
+        number = in.readInt();
+        step = in.readString();
+        tips = in.readInt();
+        tips_content = in.readString();
+        file = in.readInt();
+        filepath = in.readString();
+    }
+
+    public static final Creator<RetroDataStep> CREATOR = new Creator<RetroDataStep>() {
+        @Override
+        public RetroDataStep createFromParcel(Parcel in) {
+            return new RetroDataStep(in);
+        }
+
+        @Override
+        public RetroDataStep[] newArray(int size) {
+            return new RetroDataStep[size];
+        }
+    };
 
     public String getStep() {
         return step;
@@ -83,5 +107,20 @@ public class RetroDataStep {
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(number);
+        dest.writeString(step);
+        dest.writeInt(tips);
+        dest.writeString(tips_content);
+        dest.writeInt(file);
+        dest.writeString(filepath);
     }
 }

@@ -1,14 +1,23 @@
 package com.example.double_recyclerview;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,9 +34,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     //변수 선언.
     List<RetroData> retroDataList;
-    RetroDataStep retroDataStep;
-    RetroData retroData;
     List<RetroDataStep> retroDataStepList;
+
+    private Context mContext;
 
     public String TAG = "여기까지 돌아감.";
     private int a =6;
@@ -42,6 +51,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
          TextView tvItemTitle;
          RecyclerView rvSubItem;
+         ImageButton ib_addBtn, ib_editBtn;
 
         ItemViewHolder(View itemView) {
             // 조상의 생성자에서 itemView 를 써줘야함.
@@ -49,6 +59,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             // 부모 타이틀
             tvItemTitle = itemView.findViewById(R.id.tv_item_title);
+
+            // 추가 버튼
+            ib_addBtn = itemView.findViewById(R.id.ib_addBtn);
+
+            // 수정 버튼
+            ib_editBtn = itemView.findViewById(R.id.ib_editBtn);
 
             // 자식아이템 영역 -> 뷰홀더에 자식 영역을 추가함.
             rvSubItem = itemView.findViewById(R.id.rv_sub_item);
@@ -59,12 +75,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+        mContext = viewGroup.getContext();
+
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item, viewGroup, false);
         return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
+    public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, @SuppressLint("RecyclerView") int i) {
         // title 에 대한 retroData의 리스트를 get(i) 값으로 반영.
         RetroData retroData = retroDataList.get(i);
         itemViewHolder.tvItemTitle.setText(retroData.getTitle());
@@ -78,6 +97,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             public void onResponse(Call<List<RetroDataStep>> call, Response<List<RetroDataStep>> response) {
                 if(response.isSuccessful() && response.body() != null) {
                     retroDataStepList = response.body();
+                    Log.d(TAG, "onResponse: 데이터 넘어오니?" + retroData.getTitle());
 
                     // 자식 레이아웃 매니저 설정
                     LinearLayoutManager layoutManager = new LinearLayoutManager(
@@ -95,6 +115,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
 
                         // 2. 야영수련활동 운영계획 수립.
+
                     } else if(retroData.getNumber() == 2) {
                         SubItemAdapter subItemAdapter = new SubItemAdapter(getList2());
                         itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
@@ -143,6 +164,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         });
 
+        // 다이얼로그 창 띄우기.
+            itemViewHolder.ib_addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addList_Dialog(itemViewHolder,i);
+
+                }
+            });
+
+            // 수정 버튼 클릭시, 화면전환 시키기
+        itemViewHolder.ib_editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goDetail = new Intent(mContext.getApplicationContext(),DetailActivity.class);
+                goDetail.putExtra("dutyTitle",retroData.getTitle());
+//                goDetail.putExtra("dutyStep")
+                goDetail.putStringArrayListExtra("dutyStringStep",getStringList());
+                goDetail.putParcelableArrayListExtra("dutyStep", (ArrayList<? extends Parcelable>) getList1());
+                mContext.startActivity(goDetail);
+            }
+        });
     }
 
     @Override
@@ -150,8 +192,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return retroDataList.size();
     }
 
-    private List<RetroDataStep> getList1() {
+    public ArrayList<String> getStringList() {
+        ArrayList<String> getString1 = new ArrayList<>();
+        for (int i = 0; i < 6; i++){
+            getString1.add(i,retroDataStepList.get(i).getStep());
+        }
+        return getString1;
+    }
+
+    public List<RetroDataStep> getList1() {
         List<RetroDataStep> list1 = new ArrayList<>();
+
+        // duty_title이 1.시기확인인 것만 가져오기.
+//        if(retroDataStep.getStep().equals("1. 시기 확인"))
+//            for (int i = 0; i < retroDataStep.getStep().length(); i++){
+//                list1.add(i,retroDataStepList.get(i));
+//            }
         list1.add(0,retroDataStepList.get(0));
         list1.add(1,retroDataStepList.get(1));
         list1.add(2,retroDataStepList.get(2));
@@ -163,6 +219,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private List<RetroDataStep> getList2() {
         List<RetroDataStep> list2 = new ArrayList<>();
+//        list2
         list2.add(0,retroDataStepList.get(6));
         list2.add(1,retroDataStepList.get(7));
         list2.add(2,retroDataStepList.get(8));
@@ -223,8 +280,34 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return list8;
     }
 
+    // ArrayList 추가하는 다이얼로그 창.
+    private void addList_Dialog(@NonNull ItemViewHolder itemViewHolder, int i) {
+        RetroData retroData = retroDataList.get(i);
+//        itemViewHolder.tvItemTitle.setText(retroData.getTitle());
 
+        final EditText editText = new EditText(mContext); // 입력창.
 
+        AlertDialog.Builder dig = new AlertDialog.Builder(mContext);
+        dig.setTitle(retroData.getTitle()); // 제목을 가져온다.
+        dig.setView(editText);
+        dig.setIcon(R.drawable.ic_add);
+        dig.setPositiveButton("입력", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+                String addStep = editText.getText().toString();
+                Intent addStep1 = new Intent(mContext.getApplicationContext(),MainActivity.class);
 
+                List<String> getList1 = new ArrayList<>();
+                getList1.add(0,addStep);
+
+                // 1. DB에 업로드한다.
+                // 2. 업로드한 내용을 다시 가져온다.?
+//                getList1().add((Parcelable)addStep);
+
+                Toast.makeText(mContext, addStep, Toast.LENGTH_SHORT).show(); // 토스트 메세지 띄우기.
+            }
+        });
+        dig.show();
+    }
 }

@@ -4,12 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.4578125" />
+        <entry key="app/src/main/res/drawable/ic_file.xml" value="0.46458333333333335" />
         <entry key="app/src/main/res/drawable/ic_tips.xml" value="0.5364583333333334" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3046875" />
+        <entry key="app/src/main/res/layout/dialog_addlist.xml" value="0.4057971014492754" />
         <entry key="app/src/main/res/layout/layout_checkbox_item.xml" value="0.43072916666666666" />
-        <entry key="app/src/main/res/layout/layout_item.xml" value="0.15590312815338042" />
-        <entry key="app/src/main/res/layout/layout_sub_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_detail_item.xml" value="0.4057971014492754" />
+        <entry key="app/src/main/res/layout/layout_item.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_sub_item.xml" value="0.335" />
       </map>
     </option>
   </component>
